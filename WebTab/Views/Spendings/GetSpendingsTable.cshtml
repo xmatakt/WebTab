@@ -1,0 +1,79 @@
+﻿@model WebTab.Models.WebTable
+
+@{
+    ViewBag.Title = "Údaje za " + ViewBag.Month;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(Model.TableRows);
+    List<WebGridColumn> gridColumns = new List<WebGridColumn>();@* {new WebGridColumn {ColumnName = "ddssffaa"}};*@
+
+    gridColumns.Add
+           (
+               new WebGridColumn
+               {
+                   ColumnName = "Dátum",
+                   CanSort = false,
+                   Format =
+                @<text>
+                    <span id="title" class="display-mode">@item.Value.ItemDate.ToString("dd.MM.yyyy")</span>
+                </text>
+               }
+            );
+
+    foreach (var header in Model.TableHeaders)
+    {
+        gridColumns.Add
+            (
+                new WebGridColumn
+                {
+                    ColumnName = @header.Value,
+                    CanSort = false,
+                    Format =
+                    @<text>
+                        <span id="title" class="display-mode">@item.Value[@header.Value]</span>
+                        @Html.TextBox(@header.Value, (decimal)item.Value[@header.Value], new { @type="number", @class = "edit-mode", size = 45 })
+                    </text>
+                }
+            );
+    }
+}
+
+@grid.GetHtml(
+
+        tableStyle: "tmp",
+        headerStyle: "tmp",
+        footerStyle: "tmp",
+        rowStyle: "tmp",
+        alternatingRowStyle: "tmp",
+        selectedRowStyle: "tmp",
+    caption: "TABULECKA",
+    displayHeader: true,
+    columns: @gridColumns
+
+
+
+
+)
+
+@*<table class="own-table">
+        <tr>
+            <th class="own-table-heading">Dátum</th>
+            @foreach (var header in Model.TableHeaders)
+            {
+                <th class="own-table-heading">@header.Value</th>
+            }
+        </tr>
+        @foreach (var row in Model.TableRows)
+        {
+            <tr>
+                <td>
+                    @row.ItemDate.ToString("dd/MM/yyyy")
+                </td>
+                @foreach (var column in Model.TableHeaders)
+                {
+                    <td>
+                        @row.RowItems.RowItems[column.Value]
+                    </td>
+                }
+            </tr>
+        }
+    </table>*@

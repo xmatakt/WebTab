@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WebTabEntities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ColumnEffect">
+          <Key>
+            <PropertyRef Name="EffectID" />
+          </Key>
+          <Property Name="EffectID" Type="int" Nullable="false" />
+          <Property Name="Effect" Type="varchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="ColumnInfo">
+          <Key>
+            <PropertyRef Name="ColumnName" />
+          </Key>
+          <Property Name="ColumnName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ColumnOrder" Type="int" Nullable="false" />
+          <Property Name="ColumnEffect" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TableItem">
+          <Key>
+            <PropertyRef Name="ItemDate" />
+            <PropertyRef Name="ColumnName" />
+          </Key>
+          <Property Name="ItemDate" Type="date" Nullable="false" />
+          <Property Name="ColumnName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Note" Type="varchar(max)" />
+          <Property Name="ItemValue" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_ColumnEffect">
+          <End Role="ColumnEffect" Type="Self.ColumnEffect" Multiplicity="1" />
+          <End Role="ColumnInfo" Type="Self.ColumnInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColumnEffect">
+              <PropertyRef Name="EffectID" />
+            </Principal>
+            <Dependent Role="ColumnInfo">
+              <PropertyRef Name="ColumnEffect" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ColumnName">
+          <End Role="ColumnInfo" Type="Self.ColumnInfo" Multiplicity="1" />
+          <End Role="TableItem" Type="Self.TableItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColumnInfo">
+              <PropertyRef Name="ColumnName" />
+            </Principal>
+            <Dependent Role="TableItem">
+              <PropertyRef Name="ColumnName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebTabEntitiesStoreContainer">
+          <EntitySet Name="ColumnEffect" EntityType="Self.ColumnEffect" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ColumnInfo" EntityType="Self.ColumnInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableItem" EntityType="Self.TableItem" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_ColumnEffect" Association="Self.fk_ColumnEffect">
+            <End Role="ColumnEffect" EntitySet="ColumnEffect" />
+            <End Role="ColumnInfo" EntitySet="ColumnInfo" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ColumnName" Association="Self.fk_ColumnName">
+            <End Role="ColumnInfo" EntitySet="ColumnInfo" />
+            <End Role="TableItem" EntitySet="TableItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WebTabEntities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ColumnEffect">
+          <Key>
+            <PropertyRef Name="EffectID" />
+          </Key>
+          <Property Name="EffectID" Type="Int32" Nullable="false" />
+          <Property Name="Effect" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ColumnInfos" Relationship="Self.fk_ColumnEffect" FromRole="ColumnEffect" ToRole="ColumnInfo" />
+        </EntityType>
+        <EntityType Name="ColumnInfo">
+          <Key>
+            <PropertyRef Name="ColumnName" />
+          </Key>
+          <Property Name="ColumnName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ColumnOrder" Type="Int32" Nullable="false" />
+          <Property Name="ColumnEffect" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ColumnEffect1" Relationship="Self.fk_ColumnEffect" FromRole="ColumnInfo" ToRole="ColumnEffect" />
+          <NavigationProperty Name="TableItems" Relationship="Self.fk_ColumnName" FromRole="ColumnInfo" ToRole="TableItem" />
+        </EntityType>
+        <EntityType Name="TableItem">
+          <Key>
+            <PropertyRef Name="ItemDate" />
+            <PropertyRef Name="ColumnName" />
+          </Key>
+          <Property Name="ItemDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ColumnName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ItemValue" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <NavigationProperty Name="ColumnInfo" Relationship="Self.fk_ColumnName" FromRole="TableItem" ToRole="ColumnInfo" />
+        </EntityType>
+        <Association Name="fk_ColumnEffect">
+          <End Role="ColumnEffect" Type="Self.ColumnEffect" Multiplicity="1" />
+          <End Role="ColumnInfo" Type="Self.ColumnInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColumnEffect">
+              <PropertyRef Name="EffectID" />
+            </Principal>
+            <Dependent Role="ColumnInfo">
+              <PropertyRef Name="ColumnEffect" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ColumnName">
+          <End Role="ColumnInfo" Type="Self.ColumnInfo" Multiplicity="1" />
+          <End Role="TableItem" Type="Self.TableItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColumnInfo">
+              <PropertyRef Name="ColumnName" />
+            </Principal>
+            <Dependent Role="TableItem">
+              <PropertyRef Name="ColumnName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="webtabProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ColumnEffects" EntityType="Self.ColumnEffect" />
+          <EntitySet Name="ColumnInfoes" EntityType="Self.ColumnInfo" />
+          <EntitySet Name="TableItems" EntityType="Self.TableItem" />
+          <AssociationSet Name="fk_ColumnEffect" Association="Self.fk_ColumnEffect">
+            <End Role="ColumnEffect" EntitySet="ColumnEffects" />
+            <End Role="ColumnInfo" EntitySet="ColumnInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ColumnName" Association="Self.fk_ColumnName">
+            <End Role="ColumnInfo" EntitySet="ColumnInfoes" />
+            <End Role="TableItem" EntitySet="TableItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WebTabEntitiesStoreContainer" CdmEntityContainer="webtabProjectEntities">
+          <EntitySetMapping Name="ColumnEffects">
+            <EntityTypeMapping TypeName="WebTabEntities.ColumnEffect">
+              <MappingFragment StoreEntitySet="ColumnEffect">
+                <ScalarProperty Name="EffectID" ColumnName="EffectID" />
+                <ScalarProperty Name="Effect" ColumnName="Effect" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ColumnInfoes">
+            <EntityTypeMapping TypeName="WebTabEntities.ColumnInfo">
+              <MappingFragment StoreEntitySet="ColumnInfo">
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="ColumnOrder" ColumnName="ColumnOrder" />
+                <ScalarProperty Name="ColumnEffect" ColumnName="ColumnEffect" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableItems">
+            <EntityTypeMapping TypeName="WebTabEntities.TableItem">
+              <MappingFragment StoreEntitySet="TableItem">
+                <ScalarProperty Name="ItemDate" ColumnName="ItemDate" />
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="ItemValue" ColumnName="ItemValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

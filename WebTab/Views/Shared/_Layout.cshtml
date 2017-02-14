@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Styles/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Styles/MonthsSideBar.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<!--horne menu-->
+    <nav id="navMenu" class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Online tabulečka</a>
+            </div>
+            <ul class="nav navbar-nav">
+                @*<li class="active"><a href="#">Home</a></li>*@
+                <li><a href="#" onclick="openNav()">Výber mesiaca</a></li>
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+<!--horne menu-->
+
+    <!--months side bar-->
+    @RenderPage("~/Views/Shared/_MonthsSideBar.cshtml")
+    <!--months side bar-->
+
+    
+    <div id="main">
+        @RenderPage("~/Views/Shared/_Header.cshtml")
+        @RenderBody()
+    </div>
+    @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<!--Skripty-->
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/MonthsSideBar.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<!--Skripty-->
+</body>
+</html>
